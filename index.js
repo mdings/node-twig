@@ -15,14 +15,19 @@ var twigOptions = {
 };
 
 exports.renderFile = function(entry, options, cb) {
+  // Get the extension for the filename
+  var ext = entry.split('.').pop();
+  var phpFile = (ext == 'php') ? 'php/Php.php' : 'php/Twig.php';
+
   // Merge the global options with the local ones.
   options = extend(twigOptions, options);
 
-  execPHP('php/Twig.php', null, function (error, php) {
+  execPHP(phpFile, null, function(error, php) {
     // Call the callback on error or the render function on success.
-    error ? cb(error) : php.render(entry, options, function (error, stdout) {
+    error ? cb(error) : php.render(entry, options, function(error, stdout, output, printed) {
       // Call the callback with an error or the trimmed output.
-      error ? cb(error) : cb(null, trim(stdout));
+      var output = (ext == 'php') ? printed : stdout;
+      error ? cb(error) : cb(null, trim(output));
     });
   });
 };
