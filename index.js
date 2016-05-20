@@ -1,6 +1,13 @@
 var execPHP = require('exec-php');
 var trim = require('trim');
 
+var extend = function extend(obj, src) {
+  Object.keys(src).forEach(function(key) {
+    obj[key] = src[key];
+  });
+  return obj;
+};
+
 var twigOptions = {
   root: null,
   extensions: [],
@@ -9,7 +16,7 @@ var twigOptions = {
 
 exports.renderFile = function(entry, options, cb) {
   // Merge the global options with the local ones.
-  options = Object.assign(twigOptions, options);
+  options = extend(twigOptions, options);
 
   execPHP('php/Twig.php', null, function (error, php) {
     // Call the callback on error or the render function on success.
@@ -22,7 +29,7 @@ exports.renderFile = function(entry, options, cb) {
 
 exports.createEngine = function (options) {
   // Merge the options with default options.
-  twigOptions = Object.assign(twigOptions, options);
+  twigOptions = extend(twigOptions, options);
 
   return exports.renderFile;
 };
