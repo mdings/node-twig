@@ -17,7 +17,7 @@ var twigOptions = {
 exports.renderFile = function(entry, options, cb) {
   // Get the extension for the filename
   var ext = entry.split('.').pop();
-  var phpFile = (ext == 'php') ? 'php/Php.php' : 'php/Twig.php';
+  var phpFile = (ext == 'php') ? 'php/Vanilla.php' : 'php/Twig.php';
 
   // Merge the global options with the local ones.
   options = extend(twigOptions, options);
